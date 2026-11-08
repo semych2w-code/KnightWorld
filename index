@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnightWorld - Гриферский сервер</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-image: radial-gradient(circle, #2a2a2a 0%, #111 100%);
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #FDBE00;
+            box-shadow: 0 0 20px rgba(253, 190, 0, 0.2);
+        }
+        h1 {
+            color: #FDBE00;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px #000;
+        }
+        p {
+            font-size: 1.2em;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        .ip-box {
+            background: #333;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #555;
+            display: inline-block;
+        }
+        .ip-box:hover {
+            background: #FDBE00;
+            color: #000;
+            border-color: #FDBE00;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #00aaff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KnightWorld</h1>
+        <p>Суровое гриферское выживание 1.21.11</p>
+        
+        <div class="ip-box" onclick="copyIP()">mc.knightworld.space</div>
+        
+        <br><br>
+        
+        <a href="https://t.me/KnightWorldTGK" class="btn">Наш Telegram</a>
+    </div>
+
+    <script>
+        function copyIP() {
+            navigator.clipboard.writeText("mc.knightworld.space");
+            alert("IP скопирован! Вставь его в Minecraft.");
+        }
+    </script>
+</body>
+</html>
