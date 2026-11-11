@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnightWorld — Официальный магазин</title>
+    <style>
+        /* Базовые настройки */
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* Шапка сайта */
+        header {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #333;
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-img { width: 40px; height: 40px; background: #333; border-radius: 50%; }
+        .logo-text h1 { margin: 0; font-size: 1.2em; }
+        .logo-text p { margin: 0; font-size: 0.8em; color: #888; }
+        .nav-links { display: flex; gap: 20px; font-weight: bold; font-size: 0.9em; }
+        .nav-links a:hover { color: #f58405; }
+        
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .socials { display: flex; gap: 10px; }
+        .social-btn { width: 35px; height: 35px; background: #222; border-radius: 8px; display: flex; justify-content: center; align-items: center; border: 1px solid #444; }
+        .online-box { background: #111; padding: 5px 15px; border-radius: 8px; border: 1px solid #333; font-size: 0.9em; display: flex; align-items: center; gap: 10px; }
+        .online-dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; }
+
+        /* Баннер */
+        .banner {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?q=80&w=2000&auto=format&fit=crop') center/cover;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 50px;
+            position: relative;
+            border-bottom: 3px solid #f58405;
+        }
+        .banner h2 { font-size: 3em; margin: 0; text-transform: uppercase; font-style: italic; }
+        .banner p { font-size: 1.2em; margin: 10px 0 0 0; color: #ddd; }
+        .ip-float {
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(0,0,0,0.8); padding: 10px 20px;
+            border-radius: 10px; font-weight: bold; border: 1px solid #333;
+            cursor: pointer;
+        }
+
+        /* Основной контент */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 40px auto;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* Сайдбар */
+        .sidebar { width: 250px; flex-shrink: 0; }
+        .sidebar h3 { font-size: 0.9em; color: #888; margin-bottom: 15px; }
+        .sidebar-menu { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; margin-bottom: 20px; }
+        .sidebar-item { padding: 15px 20px; border-bottom: 1px solid #333; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .sidebar-item:hover { background: #2a2a2a; }
+        .sidebar-item.active { background: #2a2a2a; color: #f58405; }
+        .sidebar-item:last-child { border-bottom: none; }
+
+        /* Сетка товаров */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        /* Карточка товара */
+        .card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .card-img { height: 180px; background: #333; position: relative; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .discount-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 5px; font-size: 0.8em; font-weight: bold; color: #f58405; }
+        
+        .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 1.1em; font-weight: bold; margin: 0 0 5px 0; text-transform: uppercase; }
+        .card-subtitle { font-size: 0.85em; color: #888; margin-bottom: 15px; }
+        
+        .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price-area { display: flex; flex-direction: column; }
+        .price-old { font-size: 0.8em; color: #666; text-decoration: line-through; }
+        .price-new { font-size: 1.2em; font-weight: bold; color: #fff; }
+        
+        .buy-btn {
+            background: #f58405;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .buy-btn:hover { background: #ff9d2e; transform: scale(1.05); }
+
+        /* Плашка "Live" покупок */
+        .live-feed {
+            max-width: 1400px; margin: 20px auto 0 auto; padding: 0 20px;
+            display: flex; align-items: center; gap: 15px;
+            background: #1a1a1a; border-radius: 10px; padding: 15px; border: 1px solid #333;
+            overflow-x: auto;
+        }
+        .live-title { color: #ff3333; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 5px; }
+        .live-dot { width: 8px; height: 8px; background: #ff3333; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .live-item { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 80px; }
+        .live-item img { width: 40px; height: 40px; border-radius: 5px; }
+        .live-item span { font-size: 0.7em; color: #aaa; }
+
+        /* Адаптив */
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .sidebar { width: 100%; display: flex; gap: 10px; overflow-x: auto; }
+            .sidebar-menu { display: flex; }
+            .sidebar-item { border-bottom: none; border-right: 1px solid #333; white-space: nowrap; }
+            header { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-img" style="background: url('https://mc-heads.net/avatar/Steve/40') center/cover;"></div>
+            <div class="logo-text">
+                <h1>KnightWorld</h1>
+                <p>Официальный магазин</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#">ГЛАВНАЯ</a>
+            <a href="#" style="color: #f58405;">МАГАЗИН</a>
+        </div>
+        <div class="header-right">
+            <div class="socials">
+                <a href="https://t.me/KnightWorldTGK" target="_blank" class="social-btn">✈️</a>
+            </div>
+            <div class="online-box">
+                <div class="online-dot"></div>
+                <span>Онлайн: <b>1</b> / 200</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Баннер -->
+    <div class="banner">
+        <h2>KNIGHTWORLD</h2>
+        <p>Уникальные системы ✦ Активное сообщество ✦ Честная игра</p>
+        <div class="ip-float" onclick="copyIP()">mc.knightworld.space 📋</div>
+    </div>
+
+    <!-- Лента покупок (Фейковая, для видимости) -->
+    <div class="live-feed">
+        <div class="live-title"><div class="live-dot"></div> LIVE</div>
+        <div class="live-item"><img src="https://mc-heads.net/avatar/Notch/40"><span>OWNER</span></div>
+        <div class="live-item"><img src="https://mc-heads.net/avatar/Herobrine/40"><span>CURATOR</span></div>
+        <div class="live-item"><img src="https://mc-heads.net/avatar/Alex/40"><span>VIP</span></div>
+        <div class="live-item"><img src="https://mc-heads.net/avatar/Steve/40"><span>CUSTOM</span></div>
+    </div>
+
+    <!-- Основной блок -->
+    <div class="main-container">
+        
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <h3>Выберите категорию</h3>
+            <div class="sidebar-menu">
+                <div class="sidebar-item active">🛡️ Привилегии</div>
+                <div class="sidebar-item">🎁 Кейсы</div>
+                <div class="sidebar-item">⚙️ Другое</div>
+            </div>
+
+            <h3>Выберите режим</h3>
+            <div class="sidebar-menu">
+                <div class="sidebar-item">Гриферский-1</div>
+            </div>
+        </div>
+
+        <!-- Сетка товаров -->
+        <div class="products-grid">
+            
+            <!-- Товар 1 -->
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?q=80&w=400&auto=format&fit=crop" alt="Владелец">
+                    <div class="discount-badge">-35%</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">ВЛАДЕЛЕЦ СЕРВЕРА + КОНСОЛЬ</h3>
+                    <p class="card-subtitle">1 шт.</p>
+                    <div class="card-bottom">
+                        <div class="price-area">
+                            <span class="price-old">2000₽</span>
+                            <span class="price-new">1300₽</span>
+                        </div>
+                        <a href="https://t.me/KnightWorldTGK" target="_blank"><button class="buy-btn">В корзину</button></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Товар 2 -->
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?q=80&w=400&auto=format&fit=crop" alt="Owner">
+                    <div class="discount-badge">-20%</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">OWNER + FULL ПРАВА</h3>
+                    <p class="card-subtitle">1 шт.</p>
+                    <div class="card-bottom">
+                        <div class="price-area">
+                            <span class="price-old">1100₽</span>
+                            <span class="price-new">880₽</span>
+                        </div>
+                        <a href="https://t.me/KnightWorldTGK" target="_blank"><button class="buy-btn">В корзину</button></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Товар 3 -->
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?q=80&w=400&auto=format&fit=crop" alt="Curator">
+                    <div class="discount-badge">-20%</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">CURATOR + ОПКА</h3>
+                    <p class="card-subtitle">1 шт.</p>
+                    <div class="card-bottom">
+                        <div class="price-area">
+                            <span class="price-old">699₽</span>
+                            <span class="price-new">559,2₽</span>
+                        </div>
+                        <a href="https://t.me/KnightWorldTGK" target="_blank"><button class="buy-btn">В корзину</button></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Товар 4 -->
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?q=80&w=400&auto=format&fit=crop" alt="Custom">
+                    <div class="discount-badge">-20%</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">CUSTOM + Уважение</h3>
+                    <p class="card-subtitle">1 шт.</p>
+                    <div class="card-bottom">
+                        <div class="price-area">
+                            <span class="price-old">650₽</span>
+                            <span class="price-new">520₽</span>
+                        </div>
+                        <a href="https://t.me/KnightWorldTGK" target="_blank"><button class="buy-btn">В корзину</button></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function copyIP() {
+            navigator.clipboard.writeText("mc.knightworld.space");
+            alert("✅ IP скопирован! Вставь его в Minecraft.");
+        }
+    </script>
+</body>
+</html>
